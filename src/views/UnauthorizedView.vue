@@ -1,14 +1,11 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<template>
+<h1>Unauthorized</h1>
+</template>
 
-export default defineComponent({
-  name: "UnauthorizedView"
-})
+<script setup>
+
 </script>
 
-<template>
-
-</template>
 
 <style scoped>
 

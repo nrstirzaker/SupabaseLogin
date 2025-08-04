@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-//import { supabase } from '../clients/supabase'
+import { supabase } from '../client/supabase.js'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import SecretView from '../views/SecretView.vue'
 import UnauthorizedView from '../views/UnauthorizedView.vue'
-import ResetPasswordWithToken from "../views/profile/ResetPasswordWithToken.vue";
+import ResetForgottenPassword from "../views/profile/ResetForgottenPassword.vue";
 
 let localUser;
 
@@ -21,16 +22,42 @@ const router = createRouter({
             component: LoginView
         },
         {
-            path: '/profile/reset-password-with-token',
-            name: 'reset-password1',
-            component: ResetPasswordWithToken
+            path: '/profile/reset-forgotten-password',
+            name: 'reset-password',
+            component: ResetForgottenPassword
         },
         {
-            path: '/auth/confirm',
-            name: 'reset-password2',
-            component: ResetPasswordWithToken
+            path: '/secret',
+            name: 'secret',
+            meta: {requiresAuth: true},
+            component: SecretView
+        },
+        {
+            path: '/unauthorized',
+            name: 'unauthorizedView',
+            component: UnauthorizedView
         }
+
     ]
 });
+
+//getUser
+async function getUser(next){
+    localUser = await supabase.auth.getSession()
+    if (!localUser.data.session) {
+        next("/unauthorized")
+    }else{
+        next();
+    }
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth){
+        console.log("requires auth")
+        getUser(next)
+    }else{
+        next()
+    }
+})
 
 export default router

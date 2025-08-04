@@ -1,14 +1,10 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-  name: "SecretView"
-})
-</script>
-
 <template>
-
+<h1>The is protected content</h1>
 </template>
+
+<script setup>
+
+</script>
 
 <style scoped>
 
