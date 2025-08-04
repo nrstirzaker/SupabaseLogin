@@ -1,11 +1,3 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-  name: "LoginView"
-})
-</script>
-
 <template>
   <h1> Test Form </h1>
   <div class="inputContainer">
@@ -18,18 +10,37 @@ export default defineComponent({
     <input type="password" id="password" v-model="password">
   </div>
 
-  <div class="inputContainer">
-    <label for="firstName"> First Name </label>
-    <input type="firstName" id="firstName" v-model="firstName">
-  </div>
 
   <div class="buttonContainer">
     <button @click="createAccount"> Create </button>
     <button @click="login"> Login </button>
     <button @click="seeUser"> See user </button>
     <button @click="logout"> Logout </button>
+    <button @click="forgotPassword"> Forgot Password </button>
   </div>
 </template>
+
+
+<script setup>
+import {ref} from 'vue'
+import {supabase} from '../client/supabase.js'
+
+
+const email = ref('')
+const password = ref('')
+
+async function forgotPassword() {
+  const {data,error} = await supabase.auth.resetPasswordForEmail(email.value)
+
+  if (error){
+    console.log(error)
+  }else{
+    console.log(data)
+  }
+}
+
+
+</script>
 
 <style scoped>
 
